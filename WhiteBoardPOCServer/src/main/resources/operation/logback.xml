@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] [%t] - %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="SYSLOG_LOG_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.home}/poc/systemLog.log</file>
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	      <!-- daily rollover -->
+	      <fileNamePattern>${log.home}/poc/systemLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+	      <!-- keep 30 days' worth of history -->
+	      <maxHistory>30</maxHistory>
+	    </rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] [%t] - %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="BASE_SELECTION_LOG_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.home}/poc/baseSelection.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${log.home}/poc/baseSelection.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] [%t] - %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="OMC_LOG_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.home}/poc/omc.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${log.home}/poc/omc.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] [%t] - %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- Application Loggers -->
+	<logger name="com.kscc.mobilecall">
+		<level value="DEBUG" />
+	</logger>
+
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="INFO" />
+	</logger>
+
+	<logger name="org.springframework.beans">
+		<level value="INFO" />
+	</logger>
+
+	<logger name="org.springframework.context">
+		<level value="INFO" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="INFO" />
+	</logger>
+	
+	<!-- OMC Log -->
+	<logger name="OMC_LOG" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="OMC_LOG_APPENDER" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    
+    <!-- Base Selection Log -->
+	<logger name="BASE_SELECTION_LOG" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="BASE_SELECTION_LOG_FILE_APPENDER" />
+        <appender-ref ref="CONSOLE" />
+		<appender-ref ref="SYSLOG_LOG_FILE_APPENDER" />
+    </logger>
+	
+	<!-- log SQL with timing information, post execution -->
+	<logger name="jdbc.sqltiming" additivity="false">
+		<level value="TRACE" />
+	</logger>
+	
+	<logger name="java.sql">  
+     	<level value="TRACE"/>  
+    </logger>  
+    
+    <!-- Root Logger -->
+	<root level="TRACE">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="SYSLOG_LOG_FILE_APPENDER" />
+	</root>
+</configuration>
